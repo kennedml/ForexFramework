@@ -15,6 +15,7 @@ ENVIRONMENTS = {
     }
 }
 
+OUTPUT_RESULTS_DIR = '/results'
 PICKLE = 'EUR_USD_2015-OHLC.pkl'
 DOMAIN = "practice"
 STREAM_DOMAIN = ENVIRONMENTS["streaming"][DOMAIN]
