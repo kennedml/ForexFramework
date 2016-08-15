@@ -113,7 +113,7 @@ class Portfolio(object):
         This updates all positions ensuring an up to date
         unrealised profit and loss (PnL).
         """
-        currency_pair = tick_event.instrument
+        currency_pair = tick_event.pair
         if currency_pair in self.positions:
             ps = self.positions[currency_pair]
             ps.update_position_price()
@@ -134,14 +134,14 @@ class Portfolio(object):
         execute = True
         tp = self.ticker.prices
         for pair in tp:
-            if tp[pair]["ask"] is None or tp[pair]["bid"] is None:
+            if tp[pair]["askClose"] is None or tp[pair]["bidClose"] is None:
                 execute = False
 
         # All necessary pricing data is available,
         # we can execute
         if execute:
             side = signal_event.side
-            currency_pair = signal_event.instrument
+            currency_pair = signal_event.pair
             units = int(self.trade_units)
             time = signal_event.time
             

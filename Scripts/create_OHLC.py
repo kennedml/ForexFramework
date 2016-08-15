@@ -75,15 +75,24 @@ def main():
         count += 1
     
 
-    grouped_data = df.resample('24H').ohlc()
-    grouped_data.to_pickle('EUR_USD_2015-OHLC.pkl')
+    bid = df['Buy'].resample('24H').ohlc()
+    ask = df['Sell'].resample('24H').ohlc()
+   
+   
+    ask.to_pickle('EUR_USD_2015_ask-OHLC.pkl')
+    bid.to_pickle('EUR_USD_2015_bid-OHLC.pkl')
+    
+    
+    #grouped_data = df.resample('24H').ohlc()
+    #grouped_data.to_pickle('EUR_USD_2015-OHLC.pkl')
     
     print time.time() - start_time                                
     # group every 15 minutes and create OHLC
     #grouped_data = df.resample('24H', 11how='ohlc')
 
     # save to file
-
+    
+    
     #print(grouped_data)
 
 

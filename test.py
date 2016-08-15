@@ -4,7 +4,7 @@ from backtester import *
 import settings
 from strategy import TestStrategy
 from datahandler import HistoricPriceHandler
-
+from portfolio import *
 
 def main():
     # Trade on GBP/USD and EUR/USD
@@ -14,7 +14,7 @@ def main():
     strategy_params = {}
    
     #Create and execute the backtest
-    backtester = Backtester(pairs, HistoricPriceHandler, TestStrategy, strategy_params)
+    backtester = Backtester(pairs, HistoricPriceHandler, TestStrategy,strategy_params,Portfolio)
     print "Calling backtest.simulate_trading()"
     backtester.simulate_trading()
 

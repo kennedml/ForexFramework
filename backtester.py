@@ -2,7 +2,7 @@
 
 # File Name: backtester.py
 # Creation Date: Jul-30-2016
-# Last Modified: Aug-05-2016
+# Last Modified: Aug-07-2016
 # Description: Encapsulates the settings and components for carrying out
 #              an event-driven backtest for a FOREX pair
 
@@ -21,20 +21,22 @@ import sys
 import settings
 import datahandler
 import strategy
+from portfolio import *
 
 class Backtester(object):
     
-    def __init__(self, pairs, data_handler, strategy, strategy_params):
+    def __init__(self, pairs, data_handler, strategy, strategy_params,portfolio):
 
         self.pairs = pairs
         self.events = queue.Queue()
         self.ticker = data_handler(self.pairs, self.events)
         self.strategy_params = strategy_params
-        
+        self.equity = 10000.0
+
         # **kwargs will give you all keyword arguments except for those
         # corresponding to a formal parameter as a dictionary.
         self.strategy = strategy(self.pairs, self.events, **self.strategy_params)
-        
+        self.portfolio = portfolio(self.ticker,self.events,self.equity,backtest = True) 
         self.heartbeat = 0 
         self.max_iters = 1000000
     
@@ -57,7 +59,12 @@ class Backtester(object):
                 if event is not None:
                     if event.type == 'TICK':
                         self.strategy.calculate_signals(event)
+                        self.portfolio.update_portfolio(event)
+                    elif event.type == 'SIGNAL':
+                        self.portfolio.execute_signal(event)
+                
                 # TODO check if other types of events exist
+            
             time.sleep(self.heartbeat)
             iters += 1
 
@@ -65,12 +72,14 @@ class Backtester(object):
         """
         Outputs the strategy performance from the backtest.
         """
-        pass
+        print("Calculating Performance Metrics...")
+        self.portfolio.output_results()
 
     def simulate_trading(self):
         """
         Simulates the backtest
         """
         self._run_backtest()
+        self._output_performance()
         print("Backtest complete.")
 

@@ -21,12 +21,12 @@ class TestStrategy(object):
             if self.ticks % 5 == 0:
                 if self.invested == False:
                     signal = SignalEvent(self.pairs[0], "market", "buy", event.time)
-                    print event
+                    #print event
                     self.events.put(signal)
                     self.invested = True
                 else:
                     signal = SignalEvent(self.pairs[0], "market", "sell", event.time)
-                    print event
+                    #print event
                     self.events.put(signal)
                     self.invested = False
             self.ticks += 1
