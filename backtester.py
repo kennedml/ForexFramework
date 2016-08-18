@@ -2,7 +2,7 @@
 
 # File Name: backtester.py
 # Creation Date: Jul-30-2016
-# Last Modified: Aug-07-2016
+# Last Modified: Aug-16-2016
 # Description: Encapsulates the settings and components for carrying out
 #              an event-driven backtest for a FOREX pair
 
@@ -58,9 +58,11 @@ class Backtester(object):
             else:
                 if event is not None:
                     if event.type == 'TICK':
+                        print("++++++++++ TICK EVENT ++++++++++")
                         self.strategy.calculate_signals(event)
                         self.portfolio.update_portfolio(event)
                     elif event.type == 'SIGNAL':
+                        print("++++++++++ SIGNAL EVENT ++++++++++")
                         self.portfolio.execute_signal(event)
                 
                 # TODO check if other types of events exist
